@@ -25,6 +25,7 @@
             color: var(--text-color);
             background-color: var(--light-bg);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         header {
@@ -40,6 +41,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-out;
         }
         
         .logo {
@@ -51,6 +53,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: rotate(360deg) scale(1.1);
         }
         
         .logo svg {
@@ -65,6 +72,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideInDown 0.5s ease-out;
         }
         
         nav ul {
@@ -83,14 +92,30 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 4px;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-color);
+            transition: all 0.3s ease;
         }
         
         nav ul li a:hover {
             color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+            left: 0;
         }
         
         .container {
@@ -105,17 +130,39 @@
             padding: 4rem 2rem;
             text-align: center;
             margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 15s infinite linear;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1s ease-out;
         }
         
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            animation: slideInLeft 1s ease-out;
         }
         
         .hero p {
             font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto 2rem;
+            animation: slideInRight 1s ease-out;
         }
         
         .cta-button {
@@ -127,17 +174,45 @@
             font-weight: bold;
             text-decoration: none;
             border-radius: 4px;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: all 0.3s;
             margin: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            z-index: -1;
         }
         
         .cta-button:hover {
             background-color: #c0392b;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
         }
         
         section {
             margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         h2 {
@@ -147,6 +222,22 @@
             border-bottom: 3px solid var(--secondary-color);
             padding-bottom: 0.5rem;
             display: inline-block;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-color);
+            transition: width 0.5s ease;
+        }
+        
+        section.visible h2::after {
+            width: 100%;
         }
         
         h3 {
@@ -171,12 +262,21 @@
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: var(--card-shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.5s;
+            position: relative;
+            top: 0;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        section.visible .feature-card {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .feature-card h3 {
@@ -191,6 +291,11 @@
             height: 24px;
             margin-right: 8px;
             fill: var(--secondary-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover h3 svg {
+            transform: scale(1.2) rotate(10deg);
         }
         
         .team-section {
@@ -211,6 +316,19 @@
             padding: 1.5rem;
             width: 250px;
             box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        section.visible .team-member {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .team-member-img {
@@ -223,12 +341,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .team-member:hover .team-member-img {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .team-member-img svg {
             width: 60px;
             height: 60px;
             fill: #bbb;
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover .team-member-img svg {
+            fill: var(--accent-color);
+            transform: scale(1.2);
         }
         
         .download-option {
@@ -237,6 +368,19 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        section.visible .download-option {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .download-option:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
         }
         
         .download-buttons {
@@ -255,7 +399,9 @@
             border-radius: 4px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
         .download-button svg {
@@ -263,10 +409,17 @@
             height: 24px;
             margin-right: 8px;
             fill: white;
+            transition: transform 0.3s;
         }
         
         .download-button:hover {
             background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .download-button:hover svg {
+            transform: translateY(-3px);
         }
         
         .code-block {
@@ -277,6 +430,19 @@
             overflow-x: auto;
             margin: 1.5rem 0;
             font-family: 'Courier New', Courier, monospace;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .code-block::before {
+            content: '$ ';
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .code-block:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
         }
         
         .architecture-img {
@@ -286,6 +452,19 @@
             margin: 2rem auto;
             border-radius: 8px;
             box-shadow: var(--card-shadow);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        section.visible .architecture-img {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .architecture-img:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: scale(1.02);
         }
         
         .faq-container {
@@ -296,6 +475,14 @@
             margin-bottom: 1.5rem;
             border-bottom: 1px solid #ddd;
             padding-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+        
+        section.visible .faq-item {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .faq-question {
@@ -305,24 +492,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
         }
         
         .faq-question::after {
             content: '+';
             font-size: 1.5rem;
+            transition: transform 0.3s ease;
         }
         
         .faq-answer {
-            margin-top: 1rem;
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+        
+        .faq-item.active .faq-question {
+            color: var(--secondary-color);
         }
         
         .faq-item.active .faq-question::after {
             content: '-';
+            transform: rotate(180deg);
         }
         
         .faq-item.active .faq-answer {
-            display: block;
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 1rem;
         }
         
         footer {
@@ -331,21 +531,129 @@
             text-align: center;
             padding: 2rem 0;
             margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color), var(--secondary-color));
+            animation: gradient 3s ease infinite;
+            background-size: 200% auto;
         }
         
         footer p {
             margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
         }
         
         footer a {
             color: #3498db;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
         
         footer a:hover {
+            color: #2ecc71;
             text-decoration: underline;
         }
         
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Staggered animations for cards */
+        section.visible .feature-card:nth-child(1) { transition-delay: 0.1s; }
+        section.visible .feature-card:nth-child(2) { transition-delay: 0.2s; }
+        section.visible .feature-card:nth-child(3) { transition-delay: 0.3s; }
+        section.visible .feature-card:nth-child(4) { transition-delay: 0.4s; }
+        section.visible .feature-card:nth-child(5) { transition-delay: 0.5s; }
+        section.visible .feature-card:nth-child(6) { transition-delay: 0.6s; }
+        
+        section.visible .team-member:nth-child(1) { transition-delay: 0.1s; }
+        section.visible .team-member:nth-child(2) { transition-delay: 0.3s; }
+        section.visible .team-member:nth-child(3) { transition-delay: 0.5s; }
+        
+        section.visible .download-option:nth-child(1) { transition-delay: 0.1s; }
+        section.visible .download-option:nth-child(2) { transition-delay: 0.2s; }
+        section.visible .download-option:nth-child(3) { transition-delay: 0.3s; }
+        section.visible .download-option:nth-child(4) { transition-delay: 0.4s; }
+        
+        section.visible .faq-item:nth-child(1) { transition-delay: 0.1s; }
+        section.visible .faq-item:nth-child(2) { transition-delay: 0.2s; }
+        section.visible .faq-item:nth-child(3) { transition-delay: 0.3s; }
+        section.visible .faq-item:nth-child(4) { transition-delay: 0.4s; }
+        
+        /* Responsive styles */
         @media (max-width: 768px) {
             nav ul {
                 flex-direction: column;
@@ -364,6 +672,38 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 1rem auto;
+                width: 80%;
+            }
+        }
+        
+        /* Particle animation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
         }
     </style>
 </head>
@@ -396,10 +736,13 @@
     </nav>
     
     <div class="hero" id="home">
-        <h1>Detect & Terminate Malicious Reverse Shells</h1>
-        <p>Reverse Shell Killer is a comprehensive security tool designed to detect and automatically terminate malicious reverse shell connections on Linux systems. With dual detection methods combining pattern-based detection and AI-powered analysis, it provides enhanced security for your systems.</p>
-        <a href="#downloads" class="cta-button">Download Now</a>
-        <a href="#documentation" class="cta-button">Learn More</a>
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1>Detect & Terminate Malicious Reverse Shells</h1>
+            <p>Reverse Shell Killer is a comprehensive security tool designed to detect and automatically terminate malicious reverse shell connections on Linux systems. With dual detection methods combining pattern-based detection and AI-powered analysis, it provides enhanced security for your systems.</p>
+            <a href="#downloads" class="cta-button">Download Now</a>
+            <a href="#documentation" class="cta-button">Learn More</a>
+        </div>
     </div>
     
     <div class="container">
@@ -748,7 +1091,7 @@
                 <div class="faq-item">
                     <div class="faq-question">Can I contribute to the project?</div>
                     <div class="faq-answer">
-                        Absolutely! Contributions, bug reports, and feature requests are welcome on our GitHub repository.
+                        Contributions, bug reports, and feature requests are welcome on our GitHub repository.
                     </div>
                 </div>
             </div>
@@ -764,13 +1107,96 @@
     </footer>
 
     <script>
-        // FAQ toggle
+        // Intersection Observer for scroll animations
+        const sections = document.querySelectorAll('section');
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, options);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // FAQ toggle with animation
         document.querySelectorAll('.faq-question').forEach(function(q) {
             q.addEventListener('click', function() {
                 var item = this.parentElement;
                 item.classList.toggle('active');
             });
         });
+        
+        // Particle animation in hero section
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const numberOfParticles = 50;
+            
+            for (let i = 0; i < numberOfParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                // Animation
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        createParticles();
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add hover effect to code blocks
+        document.querySelectorAll('.code-block').forEach(block => {
+            block.addEventListener('mouseover', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
+            });
+            
+            block.addEventListener('mouseout', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
     </script>
 </body>
-</html></div></a>
+</html>
